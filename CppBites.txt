@@ -1,0 +1,15 @@
+1. std::unique_ptr
+This is a smart pointer that "owns" the object it points to.
+The Benefit: It automatically deletes the object when the pointer goes out of scope (like when your PaymentProcessor is destroyed).
+The Constraint: It is "unique," meaning only one unique_ptr can own a specific memory address at a time. This prevents the "double free" error.
+
+2. std::make_unique
+This is a helper function used to create the object.
+What it does: It allocates memory for the object (e.g., CreditCardPayment) on the heap and wraps it in a unique_ptr immediately.
+Why use it? It is safer and more concise than writing unique_ptr<PaymentStrategy>(new CreditCardPayment()). 
+It ensures that if the allocation fails, no memory is leaked.
+
+3. std::move
+Since a unique_ptr cannot be copied (because ownership must be unique), you cannot simply "assign" it from one place to another using standard assignment.
+What it does: It converts the pointer into an "rvalue," which signals to the compiler that you want to transfer ownership rather than copy it.
+In your code: In setPaymentStrategy, std::move(pStrategy) takes the ownership away from the function parameter and gives it to the strategy member variable. After the move, the original pStrategy becomes empty (null).
