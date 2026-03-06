@@ -24,10 +24,10 @@ class PayPalPayment: public PaymentStrategy {
 
 class PaymentProcessor {
     private:
-        unique_ptr<PaymentStrategy> strategy;
+        unique_ptr<PaymentStrategy> strategy; // cleans itself, when main ends (benefit)
     public:
         void setPaymentStrategy (unique_ptr<PaymentStrategy> pStrategy) {
-            strategy = std::move(pStrategy);
+            strategy = std::move(pStrategy); // transfers the ownership into class, cant be assigned like normally
         }
         void processPayment (double amount) {
             if (strategy) {
